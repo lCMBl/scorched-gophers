@@ -1,0 +1,98 @@
+Elm.CounterPair = Elm.CounterPair || {};
+Elm.CounterPair.make = function (_elm) {
+   "use strict";
+   _elm.CounterPair = _elm.CounterPair || {};
+   if (_elm.CounterPair.values)
+   return _elm.CounterPair.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "CounterPair",
+   $Counter = Elm.Counter.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var Bottom = function (a) {
+      return {ctor: "Bottom"
+             ,_0: a};
+   };
+   var Top = function (a) {
+      return {ctor: "Top",_0: a};
+   };
+   var Reset = {ctor: "Reset"};
+   var view = F2(function (address,
+   model) {
+      return A2($Html.div,
+      _L.fromArray([]),
+      _L.fromArray([A2($Counter.view,
+                   A2($Signal.forwardTo,
+                   address,
+                   Top),
+                   model.topCounter)
+                   ,A2($Counter.view,
+                   A2($Signal.forwardTo,
+                   address,
+                   Bottom),
+                   model.bottomCounter)
+                   ,A2($Html.button,
+                   _L.fromArray([A2($Html$Events.onClick,
+                   address,
+                   Reset)]),
+                   _L.fromArray([$Html.text("RESET")]))]));
+   });
+   var actions = $Signal.mailbox(Reset);
+   var init = F2(function (top,
+   bottom) {
+      return {_: {}
+             ,bottomCounter: $Counter.init(bottom)
+             ,topCounter: $Counter.init(top)};
+   });
+   var update = F2(function (action,
+   model) {
+      return function () {
+         switch (action.ctor)
+         {case "Bottom":
+            return _U.replace([["bottomCounter"
+                               ,A2($Counter.update,
+                               action._0,
+                               model.bottomCounter)]],
+              model);
+            case "Reset": return A2(init,
+              0,
+              0);
+            case "Top":
+            return _U.replace([["topCounter"
+                               ,A2($Counter.update,
+                               action._0,
+                               model.topCounter)]],
+              model);}
+         _U.badCase($moduleName,
+         "between lines 31 and 37");
+      }();
+   });
+   var model = A3($Signal.foldp,
+   update,
+   A2(init,0,0),
+   actions.signal);
+   var main = A2($Signal.map,
+   view(actions.address),
+   model);
+   var Model = F2(function (a,b) {
+      return {_: {}
+             ,bottomCounter: b
+             ,topCounter: a};
+   });
+   _elm.CounterPair.values = {_op: _op
+                             ,Model: Model
+                             ,init: init
+                             ,Reset: Reset
+                             ,Top: Top
+                             ,Bottom: Bottom
+                             ,update: update
+                             ,view: view
+                             ,main: main
+                             ,model: model
+                             ,actions: actions};
+   return _elm.CounterPair.values;
+};

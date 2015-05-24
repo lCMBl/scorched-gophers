@@ -1,0 +1,82 @@
+Elm.Main = Elm.Main || {};
+Elm.Main.make = function (_elm) {
+   "use strict";
+   _elm.Main = _elm.Main || {};
+   if (_elm.Main.values)
+   return _elm.Main.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Main",
+   $Basics = Elm.Basics.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var countStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                         ,_0: "font-size"
+                                                         ,_1: "20px"}
+                                                        ,{ctor: "_Tuple2"
+                                                         ,_0: "font-family"
+                                                         ,_1: "monospace"}
+                                                        ,{ctor: "_Tuple2"
+                                                         ,_0: "display"
+                                                         ,_1: "inline-block"}
+                                                        ,{ctor: "_Tuple2"
+                                                         ,_0: "width"
+                                                         ,_1: "50px"}
+                                                        ,{ctor: "_Tuple2"
+                                                         ,_0: "text-align"
+                                                         ,_1: "center"}]));
+   var update = F2(function (action,
+   model) {
+      return function () {
+         switch (action.ctor)
+         {case "Decrement":
+            return model - 1;
+            case "Increment":
+            return model + 1;}
+         _U.badCase($moduleName,
+         "between lines 17 and 19");
+      }();
+   });
+   var Decrement = {ctor: "Decrement"};
+   var Increment = {ctor: "Increment"};
+   var view = F2(function (address,
+   model) {
+      return A2($Html.div,
+      _L.fromArray([]),
+      _L.fromArray([A2($Html.button,
+                   _L.fromArray([A2($Html$Events.onClick,
+                   address,
+                   Decrement)]),
+                   _L.fromArray([$Html.text("-")]))
+                   ,A2($Html.div,
+                   _L.fromArray([countStyle]),
+                   _L.fromArray([$Html.text($Basics.toString(model))]))
+                   ,A2($Html.button,
+                   _L.fromArray([A2($Html$Events.onClick,
+                   address,
+                   Increment)]),
+                   _L.fromArray([$Html.text("+")]))]));
+   });
+   var actions = $Signal.mailbox(Increment);
+   var model = A3($Signal.foldp,
+   update,
+   0,
+   actions.signal);
+   var main = A2($Signal.map,
+   view(actions.address),
+   model);
+   _elm.Main.values = {_op: _op
+                      ,Increment: Increment
+                      ,Decrement: Decrement
+                      ,update: update
+                      ,view: view
+                      ,countStyle: countStyle
+                      ,main: main
+                      ,model: model
+                      ,actions: actions};
+   return _elm.Main.values;
+};
